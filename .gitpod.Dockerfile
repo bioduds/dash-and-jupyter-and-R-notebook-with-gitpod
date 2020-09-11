@@ -2,4 +2,4 @@
 FROM gitpod/workspace-full
 
 RUN brew install R
-RUN conda install -c r rpy2
+RUN pip install rpy2 --no-binary :all:
