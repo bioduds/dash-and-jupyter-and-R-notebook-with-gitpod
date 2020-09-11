@@ -1,12 +1,12 @@
-# dash-and-jupyter-notebook-with-gitpod
+# UFMG/UFAM Research LAB - COVID-19
 
-Simple samples to develop [Dash - A web application framework for Python](https://plot.ly/products/dash/)
-and [jupyter-notebook](https://jupyter.org/) applications on [gitpod](https://gitpod.io/). You can develop and analyse everywhere you like!
+## Pesquisadores
+* Prof. Luiz Henrique Duczmal
+* Prof. Wilhelm Alexander Steinmetz
+* IC. Eduardo Capanema
+* IC. Igor Fernandes
 
-![Screen shot](./sshot.png "Screen shot")
-![Screen shot2](./sshot2.png "Screen shot2")
-
-# Usage
+# Usages - Python, R, Jupyter, etc
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/jins-tkomoda/dash-with-gitpod)
 
@@ -34,6 +34,6 @@ Or copy and paste one of these URLs:
 Then access http://ws-12345678-1234-1234-1234-1234567890ab:8888/?token=abcdef1234567890123456789012345678901234567890 in browser tab.
 (Host name and token will be varied.)
 
-# License
+# License provider
 
 MIT
