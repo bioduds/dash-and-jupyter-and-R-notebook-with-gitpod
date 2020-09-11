@@ -1,0 +1,3 @@
+[submodule "dash-sample-apps"]
+	path = dash-sample-apps
+	url = https://github.com/plotly/dash-sample-apps.git
