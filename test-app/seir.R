@@ -189,11 +189,21 @@ options(scipen=7)
 #matplot(tt, cbind(yR[1,],yR[2,],yR[3,],yR[4,],yItotal),type="l",col=c("blue","darkgreen","orange","red","black"),lty=c(1,1),main=titulo,xlab="DIAS \n a partir de 15 de março",ylab="INFECTADOS",ylim=c(0,escalay))
 #matplot(tt, cbind(yR[1,],yR[2,],yR[3,],yR[4,],yR[5,],yR[6,],yR[7,],yR[8,],yR[9,],yItotal),type="l",col=c("pink","brown","red","gold","green","darkgreen","blue","violet","orange","black"),lty=c(1,1),main=titulo,xlab="DIAS \n a partir de 15 de março",ylab="INFECTADOS",ylim=c(0,escalay))
 #matplot(tt, cbind(yR[1,],yR[2,],yR[3,],yR[4,],yItotal),type="l",col=c("blue","darkgreen","orange","red","black"),lty=c(1,1),main=titulo,xlab="DIAS \n a partir de 15 de março",ylab="INFECTADOS",ylim=c(0,escalay))
-#matplot(tt, cbind(yR[1,],yR[2,],yR[3,],yR[4,],yItotal),type="l",col=c("blue","darkgreen","orange","red","black"),lty=c(10,3,2,5,1),lwd=3,main=titulo,xlab="DAYS \n since March 15",ylab="INFECTED PERSONS",ylim=c(0,escalay))
+#matplot(tt, 
+#    cbind(yR[1,],yR[2,],yR[3,],yR[4,],yItotal),
+#    type="l",col=c("blue","darkgreen","orange","red","black"),
+#    lty=c(10,3,2,5,1),lwd=3,main=titulo,
+#    xlab="DAYS \n since March 15",ylab="INFECTED PERSONS",
+#    ylim=c(0,escalay)
+#)
 #abline(h=Ntotal*fracg, col=c("blue","darkgreen","orange","red"),lwd=1, lty=2)
 
 #write.csv( tt, 'tt.csv' )
-print( tt )
+#print( yItotal )
+print( yR )
+
+targetPath = ""
+write.table( yR, file="seir.csv" )
 
 #Com escala automática
 #matplot(tt, cbind(yy9,yy10,yy11),type="l",col=c("blue","red","black"),lty=c(1,1),main=titulo,xlab="DIAS \n a partir de 15 de março",ylab="INFECTADOS")
