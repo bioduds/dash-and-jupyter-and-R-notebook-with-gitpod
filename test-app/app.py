@@ -10,6 +10,12 @@ from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_auth
+import rpy2.robjects as robjects
+
+# test 
+r = robjects.r
+r_output = r.source( "seir.R" )
+print( r_output )
 
 # Multi-dropdown options
 from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
