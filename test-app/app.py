@@ -1,4 +1,5 @@
-# Import required libraries
+## Eduardo Capanema (eduardocapanema@ufmg.br)
+
 import pickle
 import copy
 import pathlib
@@ -11,17 +12,37 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_auth
 import rpy2.robjects as robjects
+import sys
+import rpy2.robjects.packages as rpackages
+from rpy2.robjects.vectors import StrVector
+from rpy2.robjects import r, pandas2ri 
+from pprint import pprint
+import numpy as np
+
+pandas2ri.activate()
 
 # teste - rodando R dentro do Python
 r = robjects.r
-r_output = r.source( "seir.R" )
-print( r_output )
+r.source( "seir.R" )
+#dataf = robjects.DataFrame({})
+#print( r_output )
+#print( dataf )
+
+print( "yR  1 1 " )
+#print( r('yR[4, 180]') )
+
+r_matrix = r('yR')
+converted = pandas2ri.conversion.rpy2py( r_matrix )
+pprint( converted )
+
+#print('type(frame): {0}'.format(type(frame)))
+
 
 # Multi-dropdown options
 from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 
 # Mockup Security
-USERNAME_PASSWORD_PAIRS = [['ufmgufam','covidlab123']]
+USERNAME_PASSWORD_PAIRS = [ ['ufmgufam', 'covidlab123'] ]
 
 # get relative data folder
 PATH = pathlib.Path( __file__ ).parent
@@ -241,20 +262,11 @@ app.layout = html.Div(
             [
                 html.Div(
                     [dcc.Graph( id = "main_graph" )],
-                    className = "pretty_container seven columns",
+                    className = "pretty_container",
                 ),
                 html.Div(
                     [dcc.Graph( id = "individual_graph" )],
                     className = "pretty_container five columns",
-                ),
-            ],
-            className = "row flex-display",
-        ),
-        html.Div(
-            [
-                html.Div(
-                    [dcc.Graph( id = "pie_graph" )],
-                    className = "pretty_container seven columns",
                 ),
                 html.Div(
                     [dcc.Graph( id = "aggregate_graph" )],
@@ -565,57 +577,6 @@ def make_aggregate_figure( well_statuses, well_types, year_slider, main_graph_ho
     ]
     layout_aggregate["title"] = "Aggregate: " + WELL_TYPES[well_type]
     figure = dict( data = data, layout = layout_aggregate )
-    return figure
-
-# Selectors, main graph -> pie graph
-@app.callback(
-    Output( "pie_graph", "figure" ),
-    [
-        Input( "well_statuses", "value" ),
-        Input( "well_types", "value" ),
-        Input( "year_slider", "value" ),
-    ],
-)
-
-def make_pie_figure( well_statuses, well_types, year_slider ) :
-    layout_pie = copy.deepcopy( layout )
-    dff = filter_dataframe( df, well_statuses, well_types, year_slider )
-    selected = dff["API_WellNo"].values
-    index, gas, oil, water = produce_aggregate( selected, year_slider )
-    aggregate = dff.groupby( ["Well_Type"] ).count()
-    data = [
-        dict(
-            type = "pie",
-            labels = ["Gas", "Oil", "Water"],
-            values = [sum( gas ), sum( oil ), sum( water )],
-            name = "Production Breakdown",
-            text = [
-                "Total Gas Produced (mcf)",
-                "Total Oil Produced (bbl)",
-                "Total Water Produced (bbl)",
-            ],
-            hoverinfo = "text+value+percent",
-            textinfo = "label+percent+name",
-            hole = 0.5,
-            marker = dict( colors = ["#fac1b7", "#a9bb95", "#92d8d8"] ),
-            domain = { "x":[0, 0.45], "y":[0.2, 0.8] },
-        ),
-        dict(
-            type = "pie",
-            labels = [WELL_TYPES[i] for i in aggregate.index],
-            values = aggregate["API_WellNo"],
-            name = "Well Type Breakdown",
-            hoverinfo = "label+text+value+percent",
-            textinfo = "label+percent+name",
-            hole = 0.5,
-            marker = dict( colors = [WELL_COLORS[i] for i in aggregate.index] ),
-            domain = { "x":[0.55, 1], "y":[0.2, 0.8] },
-        ),
-    ]
-    layout_pie["title"] = "Production Summary: {} to {}".format( year_slider[0], year_slider[1] )
-    layout_pie["font"] = dict( color="#777777" )
-    layout_pie["legend"] = dict( font = dict( color = "#CCCCCC", size = "10"), orientation = "h", bgcolor = "rgba(0,0,0,0)" )
-    figure = dict( data = data, layout = layout_pie )
     return figure
 
 # Selectors -> count graph
