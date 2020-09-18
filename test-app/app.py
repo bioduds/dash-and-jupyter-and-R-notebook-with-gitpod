@@ -33,8 +33,7 @@ print( "yR  1 1 " )
 
 r_matrix = r('yR')
 converted = pandas2ri.conversion.rpy2py( r_matrix )
-df_c = pandas2ri.rpy2py_dataframe( r_matrix )
-print( df_c )
+print( converted )
 
 #print('type(frame): {0}'.format(type(frame)))
 
