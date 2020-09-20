@@ -20,7 +20,7 @@ Type in terminal: $ `python3 file_handling.py`
 
 ## jupyter notebook
 
-Type in terminal: $ `jupyter notebook`
+Type in terminal: $ `jupyter notebook` ## for jupyter environment
 
 After jupyter notebook start-up, you can see a message like followings in terminal.
 

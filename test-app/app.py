@@ -33,9 +33,9 @@ print( "yR  1 1 " )
 
 r_matrix = r('yR')
 converted = pandas2ri.conversion.rpy2py( r_matrix )
-print( converted )
+print( type(converted) )
+print( converted[3][179] )
 
-#print('type(frame): {0}'.format(type(frame)))
 
 
 # Multi-dropdown options
@@ -66,7 +66,7 @@ well_type_options = [
 ]
 
 # Load data - Data Frame
-df = pd.read_csv( DATA_PATH.joinpath( "wellspublic.csv" ), low_memory=False )
+df = pd.read_csv( DATA_PATH.joinpath( "wellspublic.csv" ), low_memory = False )
 df["Date_Well_Completed"] = pd.to_datetime( df["Date_Well_Completed"] )
 df = df[df["Date_Well_Completed"] > dt.datetime( 1960, 1, 1 )]
 
@@ -74,6 +74,12 @@ trim = df[["API_WellNo", "Well_Type", "Well_Name"]]
 trim.index = trim["API_WellNo"]
 dataset = trim.to_dict( orient="index" )
 points = pickle.load( open( DATA_PATH.joinpath( "points.pkl" ), "rb" ) )
+
+
+dfc = pd.read_csv( DATA_PATH.joinpath( "seir.csv" ), low_memory = False )
+
+
+
 
 # Create global chart template
 #mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
@@ -265,12 +271,8 @@ app.layout = html.Div(
                     className = "pretty_container",
                 ),
                 html.Div(
-                    [dcc.Graph( id = "individual_graph" )],
-                    className = "pretty_container five columns",
-                ),
-                html.Div(
                     [dcc.Graph( id = "aggregate_graph" )],
-                    className = "pretty_container five columns",
+                    className = "pretty_container",
                 ),
             ],
             className = "row flex-display",
@@ -553,15 +555,15 @@ def make_aggregate_figure( well_statuses, well_types, year_slider, main_graph_ho
         dict(
             type = "scatter",
             mode = "lines",
-            name = "Gas Produced (mcf)",
+            name = "0-9 accumulated",
             x = index,
             y = gas,
-            line = dict( shape = "spline", smoothing = "2", color = "#F9ADA0" ),
+            line = dict( shape = "spline", smoothing = "2", color = "#ffff00" ),
         ),
         dict(
             type = "scatter",
             mode = "lines",
-            name = "Oil Produced (bbl)",
+            name = "10-24 accumulated",
             x = index,
             y = oil,
             line = dict( shape = "spline", smoothing = "2", color = "#849E68" ),
@@ -569,13 +571,29 @@ def make_aggregate_figure( well_statuses, well_types, year_slider, main_graph_ho
         dict(
             type = "scatter",
             mode = "lines",
-            name = "Water Produced (bbl)",
+            name = "25-59 accumulated",
             x = index,
             y = water,
             line = dict( shape = "spline", smoothing = "2", color = "#59C3C3" ),
         ),
+        dict(
+            type = "scatter",
+            mode = "lines",
+            name = "60+ accumulated",
+            x = index,
+            y = water,
+            line = dict( shape = "spline", smoothing = "2", color = "#5C4343" ),
+        ),
+        dict(
+            type = "scatter",
+            mode = "lines",
+            name = "currently infected",
+            x = index,
+            y = water,
+            line = dict( shape = "spline", smoothing = "2", color = "#9C34C3" ),
+        ),
     ]
-    layout_aggregate["title"] = "Aggregate: " + WELL_TYPES[well_type]
+    layout_aggregate["title"] = "COVID-19 Vertical Isolation"
     figure = dict( data = data, layout = layout_aggregate )
     return figure
 
